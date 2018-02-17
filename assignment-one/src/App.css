@@ -1,3 +1,13 @@
 .App {
   text-align: center;
+  margin: 20px
+}
+
+.outputs {
+  border: 1px solid blue;
+  box-shadow: 0 2px 3px pink;
+  width: 80%;
+  margin: auto;
+  margin-top: 20px;
+  text-align: center; 
 }
