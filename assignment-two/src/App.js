@@ -32,40 +32,24 @@ const InfoBox = (props) => {
     </div>
   );
 };
- 
 
 const CharComponent = (props) => {
-  const charBoxStyle = {
-    font: 'bold 20px arial, sans-serif',
-  };
+  let myChar = props.currChar;
+  // small hack to workaround display issue for the white space char
+  // Cannot use &nbsp; that is written as is and unvalid. 
+  if (myChar == ' '){
+    myChar = '\u00A0';
+  }
 
   return (
     <div
-      className={charBoxStyle}
-      onClick={props.clicked.charIndex}
+      className="CharBox"
+      onClick={(event) => props.clicked(event, props.charIndex)}
     >
-      {props.currChar}
+      {myChar}
     </div>
   );
 };
-
-// const DisplayBox = (props) => {
-//   const boxStyle = {
-//     font: 'bold 15px arial, sans-serif',
-//     color: warningColor
-//   };
-
-//   return (
-//     <div>
-//       <p> Please enter a text that is at least {minimumLength} character long.</p>
-//       <input
-//         type='text'
-//         onChange='props.changed'
-//         value='props.myText'
-//       />
-//     </div>
-//   );
-// };
 
 class App extends Component {
 
@@ -79,12 +63,32 @@ class App extends Component {
     })
   };
 
+ charClickedHandler = (event, charIndex) => {
+  let newArr = [...this.state.myText.split('')];
+  newArr.splice(charIndex, 1);
+  this.setState({
+      myText: newArr.join('')
+    });
+  };
+
   render() {
+   const chars = this.state.myText.split('').map((currChar, index) => {
+      return <CharComponent
+        currChar={currChar}
+        charIndex={index}
+        clicked={this.charClickedHandler}
+        key={index}
+      />
+    });
+  
     return (
       <div className="App">
         <h1>Second assignment</h1>
         <UserInput myText={this.state.myText} changed={this.userInputChangedHandler} />
-        <InfoBox myText={this.state.myText}/>
+        <InfoBox myText={this.state.myText} />
+        <div className="Box">
+          {chars}
+        </div>
       </div >
     );
   }
