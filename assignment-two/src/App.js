@@ -44,7 +44,8 @@ const CharComponent = (props) => {
   return (
     <div
       className="CharBox"
-      onClick={(event) => props.clicked(event, props.charIndex)}
+      // onClick={(event) => props.clicked(event, props.charIndex)}
+      onClick={props.clicked}
     >
       {myChar}
     </div>
@@ -63,8 +64,10 @@ class App extends Component {
     })
   };
 
- charClickedHandler = (event, charIndex) => {
-  let newArr = [...this.state.myText.split('')];
+ charClickedHandler = (charIndex) => {
+  // spread array is useless
+  // let newArr = [...this.state.myText.split('')];
+  let newArr = this.state.myText.split('');
   newArr.splice(charIndex, 1);
   this.setState({
       myText: newArr.join('')
@@ -76,7 +79,7 @@ class App extends Component {
       return <CharComponent
         currChar={currChar}
         charIndex={index}
-        clicked={this.charClickedHandler}
+        clicked={()=>this.charClickedHandler(index)}
         key={index}
       />
     });
